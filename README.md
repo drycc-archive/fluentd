@@ -1,17 +1,17 @@
 
 ## Description
-[![Build Status](https://ci.deis.io/job/fluentd/badge/icon)](https://ci.deis.io/job/fluentd)
+[![Build Status](https://ci.drycc.cc/job/fluentd/badge/icon)](https://ci.drycc.cc/job/fluentd)
 
-Deis (pronounced DAY-iss) is an open source PaaS that makes it easy to deploy and manage
-applications on your own servers. Deis builds on [Kubernetes](http://kubernetes.io/) to provide
+Drycc (pronounced DAY-iss) is an open source PaaS that makes it easy to deploy and manage
+applications on your own servers. Drycc builds on [Kubernetes](http://kubernetes.io/) to provide
 a lightweight, [Heroku-inspired](http://heroku.com) workflow.
 
-![Deis Graphic](https://getdeis.blob.core.windows.net/get-deis/deis-graphic-small.png)
+![Drycc Graphic](https://getdrycc.blob.core.windows.net/get-drycc/drycc-graphic-small.png)
 
 ## About
 This is an centos7 based image for running [fluentd](http://fluentd.org). It is built for the purpose of running on a kubernetes cluster.
 
-This work is based on the [docker-fluentd](https://github.com/fabric8io/docker-fluentd) and [docker-fluentd-kubernetes](https://github.com/fabric8io/docker-fluentd-kubernetes) images by the fabric8 team. This image is in with [deis](https://github.com/teamhephy/deis) v2 to send all log data to the [logger](https://github.com/teamhephy/logger) component.
+This work is based on the [docker-fluentd](https://github.com/fabric8io/docker-fluentd) and [docker-fluentd-kubernetes](https://github.com/fabric8io/docker-fluentd-kubernetes) images by the fabric8 team. This image is in with [drycc](https://github.com/drycc/drycc) v2 to send all log data to the [logger](https://github.com/drycc/logger) component.
 
 ## Configuration
 
@@ -26,22 +26,22 @@ By default we do not capture kubernetes system logs. However, it is possible to 
 * CAPTURE_CONTROLLER_LOG
 * CAPTURE_SCHEDULER_LOG
 
-Set a variable's value to a non-empty string such as "true" to capture that log. Make these changes to the tpl/deis-logger-fluentd-daemon.yaml file in the Workflow chart directory.
+Set a variable's value to a non-empty string such as "true" to capture that log. Make these changes to the tpl/drycc-logger-fluentd-daemon.yaml file in the Workflow chart directory.
 
 ### Drop Fluentd Logs
 To turn off log collection of fluentd's own logs to avoid infinite loops set the following environment variable to a non-empty string value
 * DROP_FLUENTD_LOGS
 
-### Disable Deis Output
-To turn off the deis output plugin set the following environment variable to a non-empty string value
-* DISABLE_DEIS_OUTPUT
+### Disable Drycc Output
+To turn off the drycc output plugin set the following environment variable to a non-empty string value
+* DISABLE_DRYCC_OUTPUT
 
 ### Disable sending log or metrics data to nsq
 To turn off sending log or metrics data to nsq set the following environment variable to "false"
 * SEND_LOGS_TO_NSQ
 * SEND_METRICS_TO_NSQ
 
-This means we will not capture data from the log stream and send it to NSQ for processing. This means you will disable application logs (`deis logs`) and metrics generated from deis router.
+This means we will not capture data from the log stream and send it to NSQ for processing. This means you will disable application logs (`drycc logs`) and metrics generated from drycc router.
 
 ## Plugins
 
@@ -95,8 +95,8 @@ This plugin allows for `fluentd` to send all log data to a remote graylog endpoi
 * `GELF_TLS_OPTIONS_TLS_VERSION=":TLSv1/:TLSv1_1/:TLSv1_2"`
 * `GELF_TLS_OPTIONS_NO_DEFAULT_CA="true/false"`
 
-### Deis Output
-Deis output is a custom fluentd plugin that was written to forward data directly to deis components while filtering out data that we did not care about. We have 2 pieces of information we care about currently.
+### Drycc Output
+Drycc output is a custom fluentd plugin that was written to forward data directly to drycc components while filtering out data that we did not care about. We have 2 pieces of information we care about currently.
 
 1) Logs from applications that are written to stdout within the container and the controller logs that represent actions against those applications. These logs are sent to an internal messaging system ([NSQ](http://nsq.io)) on a configurable topic. The logger component then reads those messages and stores the data in an ring buffer.
 
@@ -119,4 +119,4 @@ To configure your custom plugins, use either the CUSTOM_STORE_# or CUSTOM_FILTER
 If you need the build tools available for installing your plugin, this can be enabled with another environment variable
 `INSTALL_BUILD_TOOLS="true"`
 
-[v2.18]: https://github.com/deis/workflow/releases/tag/v2.18.0
+[v2.18]: https://github.com/drycc/workflow/releases/tag/v2.18.0

@@ -3,10 +3,10 @@
 kind: ClusterRole
 apiVersion: {{ template "rbacAPIVersion" . }}
 metadata:
-  name: deis:deis-logger-fluentd
+  name: drycc:drycc-logger-fluentd
   labels:
-    app: deis-logger-fluentd
-    heritage: deis
+    app: drycc-logger-fluentd
+    heritage: drycc
 rules:
 - apiGroups: [""]
   resources: ["pods", "namespaces"]

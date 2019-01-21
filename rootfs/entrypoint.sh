@@ -1,3 +1,3 @@
-#!/usr/bin/dumb-init /bin/sh
+#!/bin/bash
 
-exec "$@"
+su-exec fluent "$@"

@@ -1,4 +1,4 @@
-org: "deisci"
+org: "drycc"
 pull_policy: "Always"
 docker_tag: canary
 # limits_cpu: "100m"
@@ -19,12 +19,12 @@ sources:
   scheduler: false
 
 output:
-  disable_deis: false
+  disable_drycc: false
 
 boot:
   install_build_tools: false
 
-# Any custom fluentd environment variables (https://github.com/teamhephy/fluentd#configuration)
+# Any custom fluentd environment variables (https://github.com/drycc/fluentd#configuration)
 # can be specified as key-value pairs under daemon_environment.
 daemon_environment:
   #<example-env>: <example-value>

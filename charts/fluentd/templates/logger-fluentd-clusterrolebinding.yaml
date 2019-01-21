@@ -3,17 +3,17 @@
 kind: ClusterRoleBinding
 apiVersion: {{ template "rbacAPIVersion" . }}
 metadata:
-  name: deis:deis-logger-fluentd
+  name: drycc:drycc-logger-fluentd
   labels:
-    app: deis-logger-fluentd
-    heritage: deis
+    app: drycc-logger-fluentd
+    heritage: drycc
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: deis:deis-logger-fluentd
+  name: drycc:drycc-logger-fluentd
 subjects:
 - kind: ServiceAccount
-  name: deis-logger-fluentd
+  name: drycc-logger-fluentd
   namespace: {{ .Release.Namespace }}
 {{- end -}}
 {{- end -}}

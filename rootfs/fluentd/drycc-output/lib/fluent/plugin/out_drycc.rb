@@ -1,18 +1,18 @@
 require 'fluent/mixin/config_placeholders'
 require 'fluent/mixin/plaintextformatter'
 require 'fluent/mixin/rewrite_tag_name'
-require 'fluent/mixin/deis'
+require 'fluent/mixin/drycc'
 require 'fluent/output'
 
 module Fluent
-  class DeisOutput < Output
-    Fluent::Plugin.register_output("deis", self)
+  class DryccOutput < Output
+    Fluent::Plugin.register_output("drycc", self)
 
     include Fluent::Mixin::PlainTextFormatter
     include Fluent::Mixin::ConfigPlaceholders
     include Fluent::HandleTagNameMixin
     include Fluent::Mixin::RewriteTagName
-    include Fluent::Mixin::Deis
+    include Fluent::Mixin::Drycc
 
     config_param :tag, :string, :default => ""
     config_set_default :output_include_time, false
@@ -42,7 +42,7 @@ module Fluent
 
     def emit(tag, es, chain)
       es.each do |time, record|
-        if from_controller?(record) || deis_deployed_app?(record)
+        if from_controller?(record) || drycc_deployed_app?(record)
           @logger_nsq ||= get_nsq_producer(@log_topic)
           record["time"] = Time.now().strftime("%FT%T.%6N%:z")
           push(@logger_nsq, record) if @send_logs_to_nsq && @logger_nsq

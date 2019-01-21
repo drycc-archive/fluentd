@@ -1,9 +1,9 @@
 #!/bin/bash
-if [ -z "${DISABLE_DEIS_OUTPUT}" ]
+if [ -z "${DISABLE_DRYCC_OUTPUT}" ]
 then
 cat << EOF >> $FLUENTD_CONF
 <store>
-  @type deis
+  @type drycc
 </store>
 EOF
 fi

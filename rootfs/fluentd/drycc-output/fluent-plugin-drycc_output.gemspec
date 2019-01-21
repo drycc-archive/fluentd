@@ -3,13 +3,13 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
-  gem.name          = "fluent-plugin-deis_output"
+  gem.name          = "fluent-plugin-drycc_output"
   gem.version       = "0.1.0"
-  gem.authors       = ["engineering@deis"]
-  gem.email         = ["engineering@deis.com"]
-  gem.description   = %q{Fluentd output plugin for sending data to Deis Components }
-  gem.summary       = %q{Fluentd output plugin for sending data to Deis Components}
-  gem.homepage      = "https://github.com/teamhephy/fluentd"
+  gem.authors       = ["engineering@drycc"]
+  gem.email         = ["engineering@drycc.com"]
+  gem.description   = %q{Fluentd output plugin for sending data to Drycc Components }
+  gem.summary       = %q{Fluentd output plugin for sending data to Drycc Components}
+  gem.homepage      = "https://github.com/drycc/fluentd"
   gem.license       = "ASL2"
 
   gem.files         = Dir.glob("{lib}/**/*") + %w(LICENSE README.md)

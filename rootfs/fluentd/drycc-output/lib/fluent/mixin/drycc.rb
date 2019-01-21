@@ -5,26 +5,26 @@ require 'yajl/json_gem'
 
 module Fluent
   module Mixin
-    module Deis
-      LOGGER_URL = "http://#{ENV['DEIS_LOGGER_SERVICE_HOST']}:#{ENV['DEIS_LOGGER_SERVICE_PORT_HTTP']}/logs"
-      INFLUX_HOST = "#{ENV['DEIS_MONITOR_INFLUXAPI_SERVICE_HOST']}"
-      INFLUX_PORT = "#{ENV['DEIS_MONITOR_INFLUXAPI_SERVICE_PORT_TRANSPORT']}"
+    module Drycc
+      LOGGER_URL = "http://#{ENV['DRYCC_LOGGER_SERVICE_HOST']}:#{ENV['DRYCC_LOGGER_SERVICE_PORT_HTTP']}/logs"
+      INFLUX_HOST = "#{ENV['DRYCC_MONITOR_INFLUXAPI_SERVICE_HOST']}"
+      INFLUX_PORT = "#{ENV['DRYCC_MONITOR_INFLUXAPI_SERVICE_PORT_TRANSPORT']}"
       INFLUX_DATABASE = ENV['INFLUX_DATABASE'] || "kubernetes"
-      NSQ_URL = "#{ENV['DEIS_NSQD_SERVICE_HOST']}:#{ENV['DEIS_NSQD_SERVICE_PORT_TRANSPORT']}"
+      NSQ_URL = "#{ENV['DRYCC_NSQD_SERVICE_HOST']}:#{ENV['DRYCC_NSQD_SERVICE_PORT_TRANSPORT']}"
 
       def kubernetes?(message)
         return message["kubernetes"] != nil
       end
 
       def from_controller?(message)
-        if from_container?(message, "deis-controller")
+        if from_container?(message, "drycc-controller")
           return message["log"] =~ /^(INFO|WARN|DEBUG|ERROR)\s+(\[(\S+)\])+:(.*)/
         end
         return false
       end
 
       def from_router?(message)
-        return from_container?(message, "deis-router")
+        return from_container?(message, "drycc-router")
       end
 
       def from_container?(message, regex)
@@ -34,10 +34,10 @@ module Fluent
         return false
       end
 
-      def deis_deployed_app?(message)
+      def drycc_deployed_app?(message)
         if kubernetes? message
           labels = message["kubernetes"]["labels"]
-          return true if message["kubernetes"]["namespace_name"] != "deis" && labels["heritage"] == "deis" && labels["app"] != nil
+          return true if message["kubernetes"]["namespace_name"] != "drycc" && labels["heritage"] == "drycc" && labels["app"] != nil
         end
         return false
       end
@@ -61,17 +61,17 @@ module Fluent
           tags = { app: metric["app"], status_code: metric["status_code"], host: metric["host"] }
           data = [
             {
-              series: 'deis_router_request_time_ms',
+              series: 'drycc_router_request_time_ms',
               values: { value: metric["request_time"] },
               tags: tags
             },
             {
-              series: 'deis_router_response_time_ms',
+              series: 'drycc_router_response_time_ms',
               values: { value: metric["response_time"] },
               tags: tags
             },
             {
-              series: 'deis_router_bytes_sent',
+              series: 'drycc_router_bytes_sent',
               values: { value: metric["bytes_sent"] },
               tags: tags
             },

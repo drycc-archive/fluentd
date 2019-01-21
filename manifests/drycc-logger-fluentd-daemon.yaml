@@ -1,26 +1,26 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: deis-logger-fluentd
-  namespace: deis
+  name: drycc-logger-fluentd
+  namespace: drycc
   labels:
-    heritage: deis
+    heritage: drycc
 spec:
   selector:
     matchLabels:
-      app: deis-logger-fluentd
-      heritage: deis
+      app: drycc-logger-fluentd
+      heritage: drycc
   template:
     metadata:
-      name: deis-logger-fluentd
+      name: drycc-logger-fluentd
       labels:
-        heritage: deis
-        app: deis-logger-fluentd
+        heritage: drycc
+        app: drycc-logger-fluentd
     spec:
-      serviceAccount: deis-logger-fluentd
+      serviceAccount: drycc-logger-fluentd
       containers:
-      - name: deis-logger-fluentd
-        image: quay.io/deisci/fluentd:canary
+      - name: drycc-logger-fluentd
+        image: quay.io/drycc/fluentd:canary
         imagePullPolicy: Always
         volumeMounts:
         - name: varlog

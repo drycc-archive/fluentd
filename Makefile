@@ -1,7 +1,7 @@
 SHORT_NAME ?= fluentd
 BUILD_TAG ?= git-$(shell git rev-parse --short HEAD)
-DEIS_REGISTRY ?= ${DEV_REGISTRY}
-IMAGE_PREFIX ?= deis
+DRYCC_REGISTRY ?= ${DEV_REGISTRY}
+IMAGE_PREFIX ?= drycc
 
 include versioning.mk
 
@@ -13,13 +13,13 @@ docker-build:
 	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
 test: docker-build
-	docker run ${IMAGE} /bin/bash -c "cd /fluentd/deis-output && rake test"
+	docker run ${IMAGE} /bin/bash -c "cd /fluentd/drycc-output && rake test"
 
 install:
-	helm upgrade fluentd charts/fluentd --install --namespace deis --set org=${IMAGE_PREFIX},docker_tag=${VERSION}
+	helm upgrade fluentd charts/fluentd --install --namespace drycc --set org=${IMAGE_PREFIX},docker_tag=${VERSION}
 
 upgrade:
-	helm upgrade fluentd charts/fluentd --namespace deis --set org=${IMAGE_PREFIX},docker_tag=${VERSION}
+	helm upgrade fluentd charts/fluentd --namespace drycc --set org=${IMAGE_PREFIX},docker_tag=${VERSION}
 
 uninstall:
 	helm delete fluentd --purge

@@ -1,6 +1,6 @@
 require 'bundler'
 gemdir = File.realpath(File.join(File.dirname(__FILE__), "."))
-Bundler::GemHelper.install_tasks :dir => gemdir, :name => 'fluent-plugin-deis_output'
+Bundler::GemHelper.install_tasks :dir => gemdir, :name => 'fluent-plugin-drycc_output'
 
 require 'rake/testtask'
 

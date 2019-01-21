@@ -1,11 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: deis-logger-fluentd
+  name: drycc-logger-fluentd
   labels:
-    heritage: deis
+    heritage: drycc
   annotations:
-    component.deis.io/version: {{ .Values.docker_tag }}
+    component.drycc.cc/version: {{ .Values.docker_tag }}
 spec:
   {{- if ge .Capabilities.KubeVersion.Minor "6" }}
   updateStrategy:
@@ -13,18 +13,18 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: deis-logger-fluentd
-      heritage: deis
+      app: drycc-logger-fluentd
+      heritage: drycc
   template:
     metadata:
-      name: deis-logger-fluentd
+      name: drycc-logger-fluentd
       labels:
-        heritage: deis
-        app: deis-logger-fluentd
+        heritage: drycc
+        app: drycc-logger-fluentd
     spec:
-      serviceAccount: deis-logger-fluentd
+      serviceAccount: drycc-logger-fluentd
       containers:
-      - name: deis-logger-fluentd
+      - name: drycc-logger-fluentd
         image: quay.io/{{.Values.org}}/fluentd:{{.Values.docker_tag}}
         imagePullPolicy: {{.Values.pull_policy}}
 {{- if or (.Values.limits_cpu) (.Values.limits_memory)}}
@@ -66,9 +66,9 @@ spec:
           - name: "CAPTURE_SCHEDULER_LOG"
             value: {{.Values.sources.scheduler | quote }}
           {{- end }}
-          {{- if .Values.output.disable_deis }}
-          - name: "DISABLE_DEIS_OUTPUT"
-            value: {{.Values.output.disable_deis | quote }}
+          {{- if .Values.output.disable_drycc }}
+          - name: "DISABLE_DRYCC_OUTPUT"
+            value: {{.Values.output.disable_drycc | quote }}
           {{- end }}
           {{- if .Values.boot.install_build_tools }}
           - name: "INSTALL_BUILD_TOOLS"

@@ -1,7 +1,7 @@
 name: fluentd
-home: https://github.com/teamhephy/fluentd
+home: https://github.com/drycc/fluentd
 version: <Will be populated by the ci before publishing the chart>
-description: Log shipping mechanism for Deis Workflow.
+description: Log shipping mechanism for Drycc Workflow.
 maintainers:
-  - name: Deis Team
-    email: engineering@deis.com
+  - name: Drycc Team
+    email: engineering@drycc.com
