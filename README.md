@@ -1,12 +1,10 @@
 
 ## Description
-[![Build Status](https://ci.drycc.cc/job/fluentd/badge/icon)](https://ci.drycc.cc/job/fluentd)
+[![Build Status](https://travis-ci.org/drycc/fluentd.svg?branch=master)](https://travis-ci.org/drycc/fluentd)
 
 Drycc (pronounced DAY-iss) is an open source PaaS that makes it easy to deploy and manage
 applications on your own servers. Drycc builds on [Kubernetes](http://kubernetes.io/) to provide
 a lightweight, [Heroku-inspired](http://heroku.com) workflow.
-
-![Drycc Graphic](https://getdrycc.blob.core.windows.net/get-drycc/drycc-graphic-small.png)
 
 ## About
 This is an centos7 based image for running [fluentd](http://fluentd.org). It is built for the purpose of running on a kubernetes cluster.
