@@ -20,7 +20,7 @@ spec:
       serviceAccount: drycc-logger-fluentd
       containers:
       - name: drycc-logger-fluentd
-        image: quay.io/drycc/fluentd:canary
+        image: drycc/fluentd:canary
         imagePullPolicy: Always
         volumeMounts:
         - name: varlog
