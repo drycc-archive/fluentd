@@ -47,21 +47,6 @@ module Fluent
           record["time"] = Time.now().strftime("%FT%T.%6N%:z")
           push(@logger_nsq, record) if @send_logs_to_nsq && @logger_nsq
         end
-
-        if from_router?(record)
-          @influx_nsq ||= get_nsq_producer(@metric_topic)
-          begin
-            data = build_series(record)
-            if data
-              line = data.map do |point|
-                InfluxDB::PointValue.new(point).dump
-              end.join("\n".freeze)
-              push(@influx_nsq, line) if @send_metrics_to_nsq && @influx_nsq
-            end
-          rescue Exception => e
-            puts "Error:#{e.backtrace}"
-          end
-        end
       end
       chain.next
     end

@@ -39,8 +39,6 @@ To turn off sending log or metrics data to nsq set the following environment var
 * SEND_LOGS_TO_NSQ
 * SEND_METRICS_TO_NSQ
 
-This means we will not capture data from the log stream and send it to NSQ for processing. This means you will disable application logs (`drycc logs`) and metrics generated from drycc router.
-
 ## Plugins
 
 ### [fluent-plugin-kubernetes_metadata_filter](https://github.com/fabric8io/fluent-plugin-kubernetes_metadata_filter)
@@ -96,9 +94,7 @@ This plugin allows for `fluentd` to send all log data to a remote graylog endpoi
 ### Drycc Output
 Drycc output is a custom fluentd plugin that was written to forward data directly to drycc components while filtering out data that we did not care about. We have 2 pieces of information we care about currently.
 
-1) Logs from applications that are written to stdout within the container and the controller logs that represent actions against those applications. These logs are sent to an internal messaging system ([NSQ](http://nsq.io)) on a configurable topic. The logger component then reads those messages and stores the data in an ring buffer.
-
-2) Metric data from the nginx based router. We take the log and parse out `request_time`, `response_time`, and `bytes_sent`. Each one of these metrics makes up a series that we will ultimately send to our InfluxDB system. Attached to each series is the host the data came from (where router is running) and the status code for that request.
+Logs from applications that are written to stdout within the container and the controller logs that represent actions against those applications. These logs are sent to an internal messaging system ([NSQ](http://nsq.io)) on a configurable topic. The logger component then reads those messages and stores the data in an ring buffer.
 
 The topics these messages are put on are configurable via environment variables.
 * `NSQ_LOG_TOPIC`
