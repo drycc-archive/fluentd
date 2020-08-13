@@ -5,6 +5,7 @@ USER root
 COPY fluentd /fluentd
 COPY entrypoint.sh /bin/
 RUN chmod +x /bin/entrypoint.sh
+ENV FLUENTD_CONF="/fluentd/etc/fluent.conf"
 
 RUN sed -i s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g /etc/apk/repositories \
     && apk add bash findutils \
