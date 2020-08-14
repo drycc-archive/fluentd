@@ -10,8 +10,6 @@ ENV FLUENTD_CONF="/fluentd/etc/fluent.conf"
 RUN sed -i s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g /etc/apk/repositories \
     && apk add bash findutils \
     && apk add --update --virtual .build-deps sudo build-base ruby-dev \
-    && gem sources --remove https://rubygems.org/ \
-    && gem sources -a https://mirrors.aliyun.com/rubygems/ \
     && gem install bundler:2.1.4 \
     && bundle config --global silence_root_warning 1 \
     && bundle install --gemfile=/fluentd/drycc-output/Gemfile \
