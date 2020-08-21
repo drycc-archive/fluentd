@@ -10,7 +10,7 @@ module Fluent
       INFLUX_HOST = "#{ENV['DRYCC_MONITOR_INFLUXDB_API_SERVICE_HOST']}"
       INFLUX_PORT = "#{ENV['DRYCC_MONITOR_INFLUXDB_API_SERVICE_PORT_TRANSPORT']}"
       INFLUX_DATABASE = ENV['INFLUX_DATABASE'] || "kubernetes"
-      NSQ_URLs = "#{ENV['DRYCC_NSQD_ADDRESSES']}".split(",")
+      NSQ_URLs = "#{ENV['DRYCC_NSQD_ADDRS']}".split(",")
 
       def kubernetes?(message)
         return message["kubernetes"] != nil
