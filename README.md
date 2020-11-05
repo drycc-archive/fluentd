@@ -1,6 +1,6 @@
 
 ## Description
-[![Build Status](https://travis-ci.org/drycc/fluentd.svg?branch=master)](https://travis-ci.org/drycc/fluentd)
+[![Build Status](https://travis-ci.org/drycc/fluentd.svg?branch=main)](https://travis-ci.org/drycc/fluentd)
 
 Drycc (pronounced DAY-iss) is an open source PaaS that makes it easy to deploy and manage
 applications on your own servers. Drycc builds on [Kubernetes](http://kubernetes.io/) to provide
