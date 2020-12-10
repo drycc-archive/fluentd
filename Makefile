@@ -20,10 +20,10 @@ test: docker-build
 	docker run ${IMAGE} /bin/bash -c "cd /fluentd/drycc-output && rake test"
 
 install:
-	helm upgrade fluentd charts/fluentd --install --namespace drycc --set org=${IMAGE_PREFIX},docker_tag=${VERSION}
+	helm upgrade fluentd charts/fluentd --install --namespace drycc --set org=${IMAGE_PREFIX},image_tag=${VERSION}
 
 upgrade:
-	helm upgrade fluentd charts/fluentd --namespace drycc --set org=${IMAGE_PREFIX},docker_tag=${VERSION}
+	helm upgrade fluentd charts/fluentd --namespace drycc --set org=${IMAGE_PREFIX},image_tag=${VERSION}
 
 uninstall:
 	helm delete fluentd --purge
