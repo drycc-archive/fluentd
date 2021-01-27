@@ -2,7 +2,7 @@ sudo: required
 language: go
 services:
   - docker
-script: make docker-build test
+script: DEV_REGISTRY="docker.io" make docker-build test
 notifications:
   slack:
     rooms:
