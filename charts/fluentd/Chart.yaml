@@ -1,6 +1,6 @@
 name: fluentd
 home: https://github.com/drycc/fluentd
-version: <Will be populated by the ci before publishing the chart>
+version: v1.0.0
 description: Log shipping mechanism for Drycc Workflow.
 maintainers:
   - name: Drycc Team
