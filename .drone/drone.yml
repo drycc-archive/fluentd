@@ -22,6 +22,9 @@ steps:
     - push
     - tag
     - pull_request
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
 
 - name: publish
   image: docker.io/drycc/go-dev
@@ -44,12 +47,20 @@ steps:
     event:
     - push
     - tag
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
 
 trigger:
   event:
   - push
   - tag
   - pull_request
+
+volumes:
+- name: image_registries
+  host:
+    path: /etc/containers/registries.conf
 
 ---
 kind: pipeline
@@ -61,32 +72,40 @@ platform:
   os: linux
 
 steps:
-  - name: publish
-    image: docker.io/drycc/go-dev
-    pull: if-not-exists
-    privileged: true
-    commands:
-      - echo $DOCKER_PASSWORD | docker login $DRYCC_REGISTRY --username $DOCKER_USERNAME --password-stdin
-      - make docker-build docker-immutable-push
-    environment:
-      VERSION: ${DRONE_TAG:-latest}-linux-amd64
-      DEV_REGISTRY:
-        from_secret: dev_registry
-      DRYCC_REGISTRY:
-        from_secret: drycc_registry
-      DOCKER_USERNAME:
-        from_secret: docker_username
-      DOCKER_PASSWORD:
-        from_secret: docker_password
-    when:
-      event:
-        - push
-        - tag
+- name: publish
+  image: docker.io/drycc/go-dev
+  pull: if-not-exists
+  privileged: true
+  commands:
+  - echo $DOCKER_PASSWORD | docker login $DRYCC_REGISTRY --username $DOCKER_USERNAME --password-stdin
+  - make docker-build docker-immutable-push
+  environment:
+    VERSION: ${DRONE_TAG:-latest}-linux-amd64
+    DEV_REGISTRY:
+      from_secret: dev_registry
+    DRYCC_REGISTRY:
+      from_secret: drycc_registry
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  when:
+    event:
+      - push
+      - tag
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
 
 trigger:
   event:
-    - push
-    - tag
+  - push
+  - tag
+
+volumes:
+- name: image_registries
+  host:
+    path: /etc/containers/registries.conf
 
 ---
 kind: pipeline
