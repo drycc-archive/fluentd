@@ -24,6 +24,18 @@ spec:
         app: drycc-logger-fluentd
     spec:
       serviceAccount: drycc-logger-fluentd
+      initContainers:
+      - name: drycc-logger-fluentd-init
+        image: docker.io/drycc/python-dev:latest
+        imagePullPolicy: {{.Values.image_pull_policy}}
+        command:
+          - netcat
+          - -v
+          - -a
+          - $(DRYCC_NSQD_ADDRS)
+        env:
+          - name: DRYCC_NSQD_ADDRS
+            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.cluster_domain}}:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
       containers:
       - name: drycc-logger-fluentd
         image: {{.Values.image_registry}}/{{.Values.image_org}}/fluentd:{{.Values.image_tag}}
@@ -86,7 +98,7 @@ spec:
             value: {{ $value | quote }}
           {{- end }}
           - name: DRYCC_NSQD_ADDRS
-            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.cluster.local:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
+            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.cluster_domain}}:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
         volumeMounts:
         - name: varlog
           mountPath: /var/log

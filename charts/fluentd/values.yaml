@@ -36,3 +36,4 @@ nsqd:
 # Role-Based Access Control for Kubernetes >= 1.5
 global:
   use_rbac: false
+  cluster_domain: "cluster.local"
