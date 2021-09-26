@@ -1,4 +1,4 @@
-FROM docker.io/library/fluentd:v1.9-1
+FROM docker.io/library/fluentd:v1.14-1
 
 USER root
 
