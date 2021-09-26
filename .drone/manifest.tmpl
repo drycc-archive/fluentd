@@ -12,7 +12,7 @@ manifests:
       architecture: amd64
       os: linux
   -
-    image: docker.io/drycc/fluentd:{{#if build.tag}}{{build.tag}}-{{else}}latest-{{/if}}linux-amd64
+    image: docker.io/drycc/fluentd:{{#if build.tag}}{{build.tag}}-{{else}}latest-{{/if}}linux-arm64
     platform:
       architecture: arm64
       os: linux
