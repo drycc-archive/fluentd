@@ -18,6 +18,10 @@ By default, fluent parses logs in docker json format. If you use containerd, you
 
 * `CONTAINER_TAIL_PARSER_TYPE="/^(?<time>.+) (?<stream>stdout|stderr)( (?<tags>.))? (?<log>.*)$/"`
 
+### Support exclude specific container logs
+You can exclude container logs from /var/log/containers/ with CONTAINER_TAIL_EXCLUDE_PATH.
+* `CONTAINER_TAIL_EXCLUDE_PATH='["/var/log/containers/coredns-*", "/var/log/containers/ingress-nginx-*"]'`
+
 ### Enable more verbose logging
 By default we do not capture kubernetes system logs. However, it is possible to tell fluentd to capture those logs just by specifying a few new environment variables.
 
@@ -66,6 +70,7 @@ Allows fluentd to send log data to an elastic search cluster. You must specify a
 * `ELASTICSEARCH_TIME_KEY=""` - specify where the plugin can find the timestamp used for the `@timestamp` field
 * `ELASTICSEARCH_TIME_KEY_FORMAT=""` - specify the format of `ELASTICSEARCH_TIME_KEY`
 * `ELASTICSEARCH_TIME_KEY_EXCLUDE_TIMESTAMP=""` - If `ELASTICSEARCH_TIME_KEY` specified dont set ``@timestamp
+* `ELASTICSEARCH_400_REASON="true"` - You can set this true to capture the 400 error reasons without all the other debug logs.
 
 ### [fluent-plugin-remote_syslog](https://github.com/dlackty/fluent-plugin-remote_syslog)
 This plugin allows `fluentd` to send data to a remote syslog endpoint like [papertrail](http://papertrailapp.com). You can configure `fluentd` to talk to multiple remote syslog endpoints by using the following scheme:
