@@ -45,6 +45,7 @@ cat << EOF >> $FLUENTD_CONF
   $([ -n "$ELASTICSEARCH_TARGET_INDEX_KEY" ] && echo target_index_key ${ELASTICSEARCH_TARGET_INDEX_KEY})
   $([ -n "$ELASTICSEARCH_TARGET_TYPE_KEY" ] && echo target_type_key ${ELASTICSEARCH_TARGET_TYPE_KEY})
   $([ -n "$ELASTICSEARCH_RELOAD_CONNECTIONS" ] && echo reload_connections ${ELASTICSEARCH_RELOAD_CONNECTIONS})
+  $([ -n "$ELASTICSEARCH_400_REASON" ] && echo log_es_400_reason ${ELASTICSEARCH_400_REASON})
   logstash_format ${ELASTICSEARCH_LOGSTASH_FORMAT}
   buffer_type ${FLUENTD_BUFFER_TYPE}
   $([ "${FLUENTD_BUFFER_TYPE}" == "file" ] && echo buffer_path ${FLUENTD_BUFFER_PATH})
@@ -56,6 +57,7 @@ cat << EOF >> $FLUENTD_CONF
   retry_wait ${FLUENTD_RETRY_WAIT}
   max_retry_wait ${FLUENTD_MAX_RETRY_WAIT}
   num_threads ${FLUENTD_FLUSH_THREADS}
+  suppress_type_name true
 </store>
 EOF
 fi
