@@ -39,12 +39,6 @@ steps:
     - push
     - tag
 
-trigger:
-  event:
-  - push
-  - tag
-  - pull_request
-
 ---
 kind: pipeline
 type: exec
@@ -73,11 +67,6 @@ steps:
     event:
       - push
       - tag
-
-trigger:
-  event:
-  - push
-  - tag
 
 ---
 kind: pipeline
@@ -136,8 +125,7 @@ steps:
       from_secret: chartmuseum_password
     CHARTMUSEUM_API:
       from_secret: chartmuseum_api
-
-trigger:
-  event:
-  - push
-  - tag
+  when:
+    event:
+    - push
+    - tag
