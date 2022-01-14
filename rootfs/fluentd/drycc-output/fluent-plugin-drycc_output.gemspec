@@ -23,9 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "fluent-mixin-plaintextformatter"
   gem.add_runtime_dependency "fluent-mixin-config-placeholders"
   gem.add_runtime_dependency "fluent-mixin-rewrite-tag-name"
-  gem.add_runtime_dependency "influxdb"
-  gem.add_runtime_dependency "nsq-ruby"
-  gem.add_runtime_dependency "yajl-ruby"
+  gem.add_runtime_dependency "redis"
 
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rake"

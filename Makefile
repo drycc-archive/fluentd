@@ -17,7 +17,7 @@ docker-buildx:
 	docker buildx build --platform ${PLATFORM} ${DOCKER_BUILD_FLAGS} -t ${IMAGE} rootfs --push
 
 test: docker-build
-	docker run ${IMAGE} /bin/bash -c "cd /fluentd/drycc-output && rake test"
+	_scripts/tests.sh test-unit ${IMAGE}
 
 install:
 	helm upgrade fluentd charts/fluentd --install --namespace drycc --set org=${IMAGE_PREFIX},image_tag=${VERSION}

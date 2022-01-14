@@ -1,16 +1,13 @@
 require 'json'
-require 'nsq'
-require 'influxdb'
-require 'yajl/json_gem'
+require 'redis'
 
 module Fluent
   module Mixin
     module Drycc
-      LOGGER_URL = "http://#{ENV['DRYCC_LOGGER_SERVICE_HOST']}:#{ENV['DRYCC_LOGGER_SERVICE_PORT_HTTP']}/logs"
-      INFLUX_HOST = "#{ENV['DRYCC_INFLUXDB_SERVICE_HOST']}"
-      INFLUX_PORT = "#{ENV['DRYCC_INFLUXDB_SERVICE_PORT_TRANSPORT']}"
-      INFLUX_DATABASE = ENV['INFLUX_DATABASE'] || "kubernetes"
-      NSQ_URLs = "#{ENV['DRYCC_NSQD_ADDRS']}".split(",")
+      REDIS_CONNECTIONS = []
+      "#{ENV['DRYCC_REDIS_ADDRS']}".split(",").each do |address|
+        REDIS_CONNECTIONS.append(Redis.new(url: "redis://:#{ENV['DRYCC_REDIS_PASSWORD']}@#{address}"))
+      end
 
       def kubernetes?(message)
         return message["kubernetes"] != nil
@@ -38,12 +35,12 @@ module Fluent
         return false
       end
 
-      def push(producer, value)
+      def push(redis, stream, values)
         begin
-          if value.kind_of? Hash
-            producer.write(JSON.dump(value))
+          if values.kind_of? Hash
+            redis.xadd(stream, {data: JSON.dump(values), timestamp: Time.now.to_i})
           else
-            producer.write(value)
+            redis.xadd(stream, {data: values, timestamp: Time.now.to_i})
           end
         rescue Exception => e
           puts "Error:#{e.message}"
@@ -55,10 +52,10 @@ module Fluent
         ENV["DEBUG"] == "true"
       end
 
-      def get_nsq_producer(topic)
+      def get_redis_producer()
         begin
-          puts "Creating nsq producer (#{NSQ_URLs}) for topic:#{topic}"
-          return Nsq::Producer.new(nsqd: NSQ_URLs, topic: topic)
+          puts "Creating redis producer"
+          return REDIS_CONNECTIONS[rand(REDIS_CONNECTIONS.count)]
         rescue Exception => e
           puts "Error:#{e.message}"
           return nil

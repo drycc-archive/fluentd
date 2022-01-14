@@ -5,6 +5,8 @@ imageRegistry: "docker.io"
 # limitsCpu: "100m"
 # limitsMemory: "50Mi"
 
+redis:
+  replicas: 1
 # external syslog endpoint
 syslog:
   host: "" # external syslog endpoint url
@@ -29,11 +31,6 @@ boot:
 # can be specified as key-value pairs under daemonEnvironment.
 daemonEnvironment:
   CONTAINER_TAIL_PARSER_TYPE: json
-
-nsqd:
-  replicas: 1
-  tcpPort: 4150
-  httpPort: 4151
 
 # Role-Based Access Control for Kubernetes >= 1.5
 global:

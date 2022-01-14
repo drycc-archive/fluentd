@@ -43,10 +43,9 @@ To turn off log collection of fluentd's own logs to avoid infinite loops set the
 To turn off the drycc output plugin set the following environment variable to a non-empty string value
 * DISABLE_DRYCC_OUTPUT
 
-### Disable sending log or metrics data to nsq
-To turn off sending log or metrics data to nsq set the following environment variable to "false"
-* SEND_LOGS_TO_NSQ
-* SEND_METRICS_TO_NSQ
+### Disable sending log data to redis
+To turn off sending log data to redis set the following environment variable to "false"
+* SEND_LOGS_TO_REDIS
 
 ## Plugins
 
@@ -104,11 +103,10 @@ This plugin allows for `fluentd` to send all log data to a remote graylog endpoi
 ### Drycc Output
 Drycc output is a custom fluentd plugin that was written to forward data directly to drycc components while filtering out data that we did not care about. We have 2 pieces of information we care about currently.
 
-Logs from applications that are written to stdout within the container and the controller logs that represent actions against those applications. These logs are sent to an internal messaging system ([NSQ](http://nsq.io)) on a configurable topic. The logger component then reads those messages and stores the data in an ring buffer.
+Logs from applications that are written to stdout within the container and the controller logs that represent actions against those applications. These logs are sent to an internal messaging system ([REIDS](https://redis.io/topics/streams-intro)) on a configurable topic. The logger component then reads those messages and stores the data in an ring buffer.
 
-The topics these messages are put on are configurable via environment variables.
-* `NSQ_LOG_TOPIC`
-* `NSQ_METRIC_TOPIC`
+The stream these messages are put on are configurable via environment variables.
+* `REDIS_LOG_STREAM`
 
 ### Custom Plugins
 If you need something beyond the plugins that come pre-installed in the image, it is possible to set some environment variables to install and configure custom plugins as well.

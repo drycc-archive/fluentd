@@ -1,4 +1,4 @@
-{{ $nsqdNodeCount := .Values.nsqd.replicas | int }}
+{{ $redisNodeCount := .Values.redis.replicas | int }}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -29,13 +29,13 @@ spec:
         image: docker.io/drycc/python-dev:latest
         imagePullPolicy: {{.Values.imagePullPolicy}}
         command:
-          - netcat
-          - -v
-          - -a
-          - $(DRYCC_NSQD_ADDRS)
+        - netcat
+        - -v
+        - -a
+        - $(DRYCC_REDIS_ADDRS)
         env:
-          - name: DRYCC_NSQD_ADDRS
-            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.clusterDomain}}:{{$.Values.nsqd.tcpPort}}{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
+        - name: DRYCC_REDIS_ADDRS
+          value: "{{range $i := until $redisNodeCount}}drycc-redis-{{$i}}.drycc-redis.{{$.Release.Namespace}}.svc.{{$.Values.global.clusterDomain}}:6379{{if lt (add 1 $i) $redisNodeCount}},{{end}}{{end}}"
       containers:
       - name: drycc-logger-fluentd
         image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/fluentd:{{.Values.imageTag}}
@@ -93,12 +93,17 @@ spec:
           - name: "SYSLOG_PORT"
             value: {{.Values.syslog.port | quote }}
           {{- end }}
+          - name: DRYCC_REDIS_ADDRS
+            value: "{{range $i := until $redisNodeCount}}drycc-redis-{{$i}}.drycc-redis.{{$.Release.Namespace}}.svc.{{$.Values.global.clusterDomain}}:6379{{if lt (add 1 $i) $redisNodeCount}},{{end}}{{end}}"
+          - name: DRYCC_REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis-creds
+                key: password
           {{- range $key, $value := .Values.daemonEnvironment }}
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
-          - name: DRYCC_NSQD_ADDRS
-            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.clusterDomain}}:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
         volumeMounts:
         - name: varlog
           mountPath: /var/log

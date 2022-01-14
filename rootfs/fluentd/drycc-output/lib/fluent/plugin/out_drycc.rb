@@ -22,12 +22,9 @@ module Fluent
 
     def initialize
       super
-      @logger_nsq = nil
-      @influx_nsq = nil
-      @log_topic = ENV['NSQ_LOG_TOPIC'] || "logs"
-      @metric_topic = ENV['NSQ_METRIC_TOPIC'] || "metrics"
-      @send_logs_to_nsq = ENV['SEND_LOGS_TO_NSQ'].to_s.downcase == 'false' ? false : true
-      @send_metrics_to_nsq = ENV['SEND_METRICS_TO_NSQ'].to_s.downcase == 'false' ? false : true
+      @logger_redis = nil
+      @redis_log_stream = ENV['REDIS_LOG_STREAM'] || "logs"
+      @send_logs_to_redis = ENV['SEND_LOGS_TO_REDIS'].to_s.downcase == 'false' ? false : true
     end
 
     def start
@@ -36,16 +33,15 @@ module Fluent
 
     def shutdown
       super
-      @logger_nsq.terminate if @logger_nsq
-      @influx_nsq.terminate if @influx_nsq
+      @logger_redis.terminate if @logger_redis
     end
 
     def emit(tag, es, chain)
       es.each do |time, record|
         if from_controller?(record) || drycc_deployed_app?(record)
-          @logger_nsq ||= get_nsq_producer(@log_topic)
+          @logger_redis ||= get_redis_producer()
           record["time"] = Time.now().strftime("%FT%T.%6N%:z")
-          push(@logger_nsq, record) if @send_logs_to_nsq && @logger_nsq
+          push(@logger_redis, @redis_log_stream, record) if @send_logs_to_redis && @logger_redis
         end
       end
       chain.next

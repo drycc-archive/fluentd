@@ -18,8 +18,7 @@ RUN apk add bash findutils \
     && fluent-gem install --no-document fluent-plugin-remote_syslog -v 1.0.0 \
     && fluent-gem install --no-document fluent-plugin-sumologic_output -v 1.7.3 \
     && fluent-gem install --no-document fluent-plugin-gelf-hs -v 1.0.8 \
-    && fluent-gem install --no-document influxdb -v 0.8.1 \
-    && fluent-gem install --no-document nsq-ruby -v 2.3.1 \
+    && fluent-gem install --no-document redis -v 4.5.1 \
     && fluent-gem install --local /fluentd/drycc-output/pkg/fluent-plugin-drycc_output-0.1.0.gem \
     && sudo gem sources --clear-all \
     && apk del .build-deps \
