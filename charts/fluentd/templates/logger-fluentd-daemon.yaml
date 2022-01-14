@@ -6,7 +6,7 @@ metadata:
   labels:
     heritage: drycc
   annotations:
-    component.drycc.cc/version: {{ .Values.image_tag }}
+    component.drycc.cc/version: {{ .Values.imageTag }}
 spec:
   {{- if ge .Capabilities.KubeVersion.Minor "6" }}
   updateStrategy:
@@ -27,7 +27,7 @@ spec:
       initContainers:
       - name: drycc-logger-fluentd-init
         image: docker.io/drycc/python-dev:latest
-        imagePullPolicy: {{.Values.image_pull_policy}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
         command:
           - netcat
           - -v
@@ -35,25 +35,25 @@ spec:
           - $(DRYCC_NSQD_ADDRS)
         env:
           - name: DRYCC_NSQD_ADDRS
-            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.cluster_domain}}:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
+            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.clusterDomain}}:{{$.Values.nsqd.tcpPort}}{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
       containers:
       - name: drycc-logger-fluentd
-        image: {{.Values.image_registry}}/{{.Values.image_org}}/fluentd:{{.Values.image_tag}}
-        imagePullPolicy: {{.Values.image_pull_policy}}
-{{- if or (.Values.limits_cpu) (.Values.limits_memory)}}
+        image: {{.Values.imageRegistry}}/{{.Values.imageOrg}}/fluentd:{{.Values.imageTag}}
+        imagePullPolicy: {{.Values.imagePullPolicy}}
+{{- if or (.Values.limitsCpu) (.Values.limitsMemory)}}
         resources:
           limits:
-{{- if (.Values.limits_cpu) }}
-            cpu: {{.Values.limits_cpu}}
+{{- if (.Values.limitsCpu) }}
+            cpu: {{.Values.limitsCpu}}
 {{- end}}
-{{- if (.Values.limits_memory) }}
-            memory: {{.Values.limits_memory}}
+{{- if (.Values.limitsMemory) }}
+            memory: {{.Values.limitsMemory}}
 {{- end}}
 {{- end}}
         env:
-          {{- if .Values.sources.start_script }}
+          {{- if .Values.sources.startScript }}
           - name: "CAPTURE_START_SCRIPT"
-            value: {{.Values.sources.start_script | quote }}
+            value: {{.Values.sources.startScript | quote }}
           {{- end }}
           {{- if .Values.sources.docker }}
           - name: "CAPTURE_DOCKER_LOG"
@@ -67,9 +67,9 @@ spec:
           - name: "CAPTURE_KUBELET_LOG"
             value: {{.Values.sources.kubelet | quote }}
           {{- end }}
-          {{- if .Values.sources.kube_api }}
+          {{- if .Values.sources.kubeApi }}
           - name: "CAPTURE_KUBE_API_LOG"
-            value: {{.Values.sources.kube_api | quote }}
+            value: {{.Values.sources.kubeApi | quote }}
           {{- end }}
           {{- if .Values.sources.controller }}
           - name: "CAPTURE_CONTROLLER_LOG"
@@ -79,13 +79,13 @@ spec:
           - name: "CAPTURE_SCHEDULER_LOG"
             value: {{.Values.sources.scheduler | quote }}
           {{- end }}
-          {{- if .Values.output.disable_drycc }}
+          {{- if .Values.output.disableDrycc }}
           - name: "DISABLE_DRYCC_OUTPUT"
-            value: {{.Values.output.disable_drycc | quote }}
+            value: {{.Values.output.disableDrycc | quote }}
           {{- end }}
-          {{- if .Values.boot.install_build_tools }}
+          {{- if .Values.boot.installBuildTools }}
           - name: "INSTALL_BUILD_TOOLS"
-            value: {{.Values.boot.install_build_tools | quote }}
+            value: {{.Values.boot.installBuildTools | quote }}
           {{- end }}
           {{- if and (.Values.syslog.host) (.Values.syslog.port)}}
           - name: "SYSLOG_HOST"
@@ -93,12 +93,12 @@ spec:
           - name: "SYSLOG_PORT"
             value: {{.Values.syslog.port | quote }}
           {{- end }}
-          {{- range $key, $value := .Values.daemon_environment }}
+          {{- range $key, $value := .Values.daemonEnvironment }}
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
           - name: DRYCC_NSQD_ADDRS
-            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.cluster_domain}}:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
+            value: "{{range $i := until $nsqdNodeCount}}drycc-nsqd-{{$i}}.drycc-nsqd.{{ $.Release.Namespace }}.svc.{{$.Values.global.clusterDomain}}:4150{{if lt (add 1 $i) $nsqdNodeCount}},{{end}}{{end}}"
         volumeMounts:
         - name: varlog
           mountPath: /var/log
