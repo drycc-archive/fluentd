@@ -6,7 +6,7 @@ BUILD_TOOLS='g++ gcc make ruby-dev'
 if [ "$INSTALL_BUILD_TOOLS" == "true" ]
 then
   echo "Installing Build tools!"
-  apk add --update --virtual .build-deps sudo build-base ruby-dev
+  install-package sudo build-essential ruby-dev
 fi
 
 # is there a broken symlink in /var/log/containers?
@@ -51,8 +51,23 @@ if [ "$INSTALL_BUILD_TOOLS" == "true" ]
 then
   echo "Removing Build tools!"
   sudo gem sources --clear-all
-  apk del .build-deps
-  rm -rf /var/cache/apk/* /root/.gem/ruby/*/cache/*.gem
+  apt-get purge -y --auto-remove sudo build-essential ruby-dev
+  apt-get autoremove -y
+  apt-get clean -y
+  rm -rf \
+    /usr/share/doc \
+    /usr/share/man \
+    /usr/share/info \
+    /usr/share/locale \
+    /var/lib/apt/lists/* \
+    /var/log/* \
+    /var/cache/debconf/* \
+    /etc/systemd \
+    /lib/lsb \
+    /lib/udev \
+    /usr/lib/$(uname -m)-linux-gnu/gconv/IBM* \
+    /usr/lib/$(uname -m)-linux-gnu/gconv/EBC* \
+    /var/cache/apk/* /root/.gem/ruby/*/cache/*.gem
 fi
 
 exec fluentd -c $FLUENTD_CONF
