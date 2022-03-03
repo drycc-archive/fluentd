@@ -3,6 +3,7 @@ FROM docker.io/drycc/base:bullseye
 USER root
 
 COPY fluentd /fluentd
+WORKDIR /fluentd
 ENV FLUENTD_CONF="/fluentd/etc/fluent.conf" \
   RUBY_VERSION="3.1.0" \
   FLUENTD_VERSION="1.14.5"
@@ -25,9 +26,7 @@ RUN buildDeps='libyaml-dev build-essential'; \
   && fluent-gem install --local /fluentd/drycc-output/pkg/fluent-plugin-drycc_output-0.1.0.gem \
   && gem sources --clear-all \
   # cleanup
-  && bash -c "scanelp /app/.venv/lib > runtime.txt" \
   && apt-get purge -y --auto-remove $buildDeps \
-  && install-packages $(< runtime.txt) \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf \
