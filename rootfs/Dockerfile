@@ -5,15 +5,15 @@ USER root
 COPY fluentd /fluentd
 WORKDIR /fluentd
 ENV FLUENTD_CONF="/fluentd/etc/fluent.conf" \
-  RUBY_VERSION="3.1.0" \
+  RUBY_VERSION="3.1.1" \
   FLUENTD_VERSION="1.14.5"
 
 RUN buildDeps='libyaml-dev build-essential'; \
-  install-packages $buildDeps \
+    runDeps="net-tools" \
+  && install-packages $buildDeps \
+  && install-packages $runDeps \
   && install-stack ruby $RUBY_VERSION \
   && install-stack fluentd $FLUENTD_VERSION && . init-stack \
-  && gem install bundler:2.2.27 \
-  && bundle config --global silence_root_warning 1 \
   && bundle install --gemfile=/fluentd/drycc-output/Gemfile \
   && rake --rakefile=/fluentd/drycc-output/Rakefile build \
   && fluent-gem install --no-document fluent-plugin-kubernetes_metadata_filter -v 2.9.4 \
@@ -26,7 +26,9 @@ RUN buildDeps='libyaml-dev build-essential'; \
   && fluent-gem install --local /fluentd/drycc-output/pkg/fluent-plugin-drycc_output-0.1.0.gem \
   && gem sources --clear-all \
   # cleanup
+  && scanelp /opt/drycc/fluentd > runtime.txt \
   && apt-get purge -y --auto-remove $buildDeps \
+  && install-packages $(< runtime.txt) \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf \

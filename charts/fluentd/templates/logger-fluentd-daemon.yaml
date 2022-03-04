@@ -28,7 +28,7 @@ spec:
       - name: drycc-logger-fluentd-init
         image: docker.io/drycc/python-dev:latest
         imagePullPolicy: {{.Values.imagePullPolicy}}
-        command:
+        args:
         - netcat
         - -v
         - -a
