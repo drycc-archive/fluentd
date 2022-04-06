@@ -6,7 +6,7 @@ COPY fluentd /fluentd
 WORKDIR /fluentd
 ENV FLUENTD_CONF="/fluentd/etc/fluent.conf" \
   RUBY_VERSION="3.1.1" \
-  FLUENTD_VERSION="1.14.5"
+  FLUENTD_VERSION="1.14.6"
 
 RUN buildDeps='libyaml-dev build-essential'; \
     runDeps="net-tools" \
