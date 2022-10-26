@@ -2,14 +2,14 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: drycc:drycc-logger-fluentd
+  name: {{ printf "%s:drycc-logger-fluentd" .Release.Namespace | quote }}
   labels:
     app: drycc-logger-fluentd
     heritage: drycc
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: drycc:drycc-logger-fluentd
+  name: {{ printf "%s:drycc-logger-fluentd" .Release.Namespace | quote }}
 subjects:
 - kind: ServiceAccount
   name: drycc-logger-fluentd
