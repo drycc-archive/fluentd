@@ -1,6 +1,6 @@
 
 ## Description
-[![Build Status](https://drone.drycc.cc/api/badges/drycc/fluentd/status.svg)](https://drone.drycc.cc/drycc/fluentd)
+[![Build Status](https://woodpecker.drycc.cc/api/badges/drycc/fluentd/status.svg)](https://woodpecker.drycc.cc/drycc/fluentd)
 
 Drycc (pronounced DAY-iss) is an open source PaaS that makes it easy to deploy and manage
 applications on your own servers. Drycc builds on [Kubernetes](http://kubernetes.io/) to provide
