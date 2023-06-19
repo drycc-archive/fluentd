@@ -11,8 +11,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    concurrent-ruby (1.1.10)
-    connection_pool (2.2.5)
+    concurrent-ruby (1.2.2)
+    connection_pool (2.4.1)
     cool.io (1.7.1)
     fluent-mixin-config-placeholders (0.4.0)
       fluentd
@@ -22,39 +22,39 @@ GEM
       ltsv
     fluent-mixin-rewrite-tag-name (0.1.0)
       fluentd
-    fluentd (1.15.2)
+    fluentd (1.16.1)
       bundler
       cool.io (>= 1.4.5, < 2.0.0)
       http_parser.rb (>= 0.5.1, < 0.9.0)
       msgpack (>= 1.3.1, < 2.0.0)
-      serverengine (>= 2.3.0, < 3.0.0)
+      serverengine (>= 2.3.2, < 3.0.0)
       sigdump (~> 0.2.2)
       strptime (>= 0.2.4, < 1.0.0)
       tzinfo (>= 1.0, < 3.0)
       tzinfo-data (~> 1.0)
-      webrick (>= 1.4.2, < 1.8.0)
+      webrick (~> 1.4)
       yajl-ruby (~> 1.0)
     http_parser.rb (0.8.0)
     ltsv (0.1.2)
-    msgpack (1.5.6)
-    power_assert (2.0.1)
+    msgpack (1.7.1)
+    power_assert (2.0.3)
     rake (13.0.6)
-    redis (5.0.1)
-      redis-client (~> 0.7)
-    redis-client (0.7.1)
+    redis (5.0.6)
+      redis-client (>= 0.9.0)
+    redis-client (0.14.1)
       connection_pool
-    serverengine (2.3.0)
+    serverengine (2.3.2)
       sigdump (~> 0.2.2)
     sigdump (0.2.4)
     strptime (0.2.5)
-    test-unit (3.5.3)
+    test-unit (3.6.0)
       power_assert
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    tzinfo-data (1.2022.3)
+    tzinfo-data (1.2023.3)
       tzinfo (>= 1.0.0)
     uuidtools (2.2.0)
-    webrick (1.7.0)
+    webrick (1.8.1)
     yajl-ruby (1.4.3)
 
 PLATFORMS
@@ -67,4 +67,4 @@ DEPENDENCIES
   test-unit
 
 BUNDLED WITH
-   2.3.7
+   2.4.10
