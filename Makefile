@@ -10,11 +10,11 @@ build: docker-build
 push: docker-push
 
 docker-build:
-	docker build ${DOCKER_BUILD_FLAGS} -t ${IMAGE} rootfs
+	docker build ${DOCKER_BUILD_FLAGS} --build-arg CODENAME=${CODENAME} -t ${IMAGE} rootfs
 	docker tag ${IMAGE} ${MUTABLE_IMAGE}
 
 docker-buildx:
-	docker buildx build --platform ${PLATFORM} ${DOCKER_BUILD_FLAGS} -t ${IMAGE} rootfs --push
+	docker buildx build --platform ${PLATFORM} ${DOCKER_BUILD_FLAGS} --build-arg CODENAME=${CODENAME} -t ${IMAGE} rootfs --push
 
 test: docker-build
 	_scripts/tests.sh test-unit ${IMAGE}
