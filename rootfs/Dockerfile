@@ -23,7 +23,6 @@ RUN buildDeps='libyaml-dev build-essential'; \
   && fluent-gem install --no-document fluent-plugin-remote_syslog -v 1.1.0 \
   && fluent-gem install --no-document fluent-plugin-sumologic_output -v 1.8.0 \
   && fluent-gem install --no-document fluent-plugin-gelf-hs -v 1.0.8 \
-  && fluent-gem install --no-document influxdb-client -v 2.9.0 \
   && fluent-gem install --no-document redis -v 5.0.6 \
   && fluent-gem install --local /fluentd/drycc-output/pkg/fluent-plugin-drycc_output-0.1.0.gem \
   && gem sources --clear-all \
