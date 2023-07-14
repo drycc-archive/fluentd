@@ -8,6 +8,7 @@ module Fluent
       "#{ENV['DRYCC_REDIS_ADDRS']}".split(",").each do |address|
         REDIS_CONNECTIONS.append(Redis.new(url: "redis://:#{ENV['DRYCC_REDIS_PASSWORD']}@#{address}"))
       end
+      LOG_MAX_LINES = ENV.fetch('LOG_MAX_LINES',"1000").to_i
 
       def kubernetes?(message)
         return message["kubernetes"] != nil
@@ -37,6 +38,7 @@ module Fluent
 
       def push(redis, stream, values)
         begin
+          redis.xtrim(stream, LOG_MAX_LINES, approximate: true)
           if values.kind_of? Hash
             redis.xadd(stream, {data: JSON.dump(values), timestamp: Time.now.to_i})
           else

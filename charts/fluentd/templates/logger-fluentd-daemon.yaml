@@ -95,6 +95,10 @@ spec:
         - name: "SYSLOG_PORT"
           value: {{.Values.syslog.port | quote }}
         {{- end }}
+        {{- if .Values.output.logMaxLines }}
+        - name: "LOG_MAX_LINES"
+          value: {{.Values.output.logMaxLines | quote }}
+        {{- end }}
         - name: DRYCC_REDIS_ADDRS
           valueFrom:
             secretKeyRef:
