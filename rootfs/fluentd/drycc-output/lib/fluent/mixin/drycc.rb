@@ -8,6 +8,7 @@ module Fluent
       "#{ENV['DRYCC_REDIS_ADDRS']}".split(",").each do |address|
         REDIS_CONNECTIONS.append(Redis.new(url: "redis://:#{ENV['DRYCC_REDIS_PASSWORD']}@#{address}"))
       end
+      NAMESPACE = ENV.fetch('NAMESPACE',"drycc")
       LOG_MAX_LINES = ENV.fetch('LOG_MAX_LINES',"1000").to_i
 
       def kubernetes?(message)
@@ -31,7 +32,7 @@ module Fluent
       def drycc_deployed_app?(message)
         if kubernetes? message
           labels = message["kubernetes"]["labels"]
-          return true if message["kubernetes"]["namespace_name"] != "drycc" && labels["heritage"] == "drycc" && labels["app"] != nil
+          return true if message["kubernetes"]["namespace_name"] != NAMESPACE && labels["heritage"] == "drycc" && labels["app"] != nil
         end
         return false
       end

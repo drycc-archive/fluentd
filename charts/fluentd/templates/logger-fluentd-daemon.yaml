@@ -53,6 +53,8 @@ spec:
 {{- end}}
 {{- end}}
         env:
+        - name: NAMESPACE
+          value: {{.Release.Namespace}}
         {{- if .Values.sources.startScript }}
         - name: "CAPTURE_START_SCRIPT"
           value: {{.Values.sources.startScript | quote }}
